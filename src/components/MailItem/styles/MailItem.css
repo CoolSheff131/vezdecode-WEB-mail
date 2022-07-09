@@ -11,6 +11,10 @@
   padding-left: 5px;
   padding-right: 5px;
   margin-bottom: 5px;
+
+  background-color: var(--secondary-color);
+
+  color: #e7e8ea;
 }
 
 .mail-item:hover {
@@ -31,4 +35,22 @@
 
 .mail-item__date-time {
   color: #727272;
+}
+
+.mail-item__important {
+  color: #fc2c38;
+  font-size: 25px;
+  font-weight: 500;
+}
+.mail-item__finance {
+  color: #2ec984;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.mail-item__new {
+  background-color: #343435;
+  padding: 5px;
+  height: 30;
+  border-radius: 15px;
 }

@@ -1,38 +1,41 @@
-.App {
-  text-align: center;
+:root {
+  --main-color: #000;
+  --secondary-color: #222;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  padding: 0;
+  margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.settings {
+  margin-bottom: 10px;
+  border-radius: 15px;
+  background-color: var(--secondary-color);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.root {
+  background: var(--main-color);
+}
+
+.radio {
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.container {
+  z-index: 10;
+  overflow-y: auto;
+  height: 100vh;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.background {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.background-cat {
+  background-image: url('https://static.vecteezy.com/system/resources/previews/003/423/831/original/cute-cat-kitten-greeting-cartoon-doodle-background-wallpaper-free-vector.jpg');
+}
+
+.background-dog {
+  background-image: url('https://images.pling.com/img/00/00/64/33/33/1680954/dog-with-flower-in-mouth-sz-1920x1080.jpg');
 }
