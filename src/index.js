@@ -13,16 +13,52 @@ import {
   PanelHeader,
   Header,
   Group,
-  SimpleCell,
-  Checkbox,
+  Button,
 } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
-import smalData from './data/small.json';
+
 import MailItem from './components/MailItem';
 
 const Example = () => {
+  const [emailItems, setEmailItems] = React.useState([]);
+  const [toggledMailItemIds, setToggledMailItemIds] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch('http://localhost:5000/mails')
+      .then((data) => data.json())
+      .then((data) => {
+        setEmailItems(data);
+      });
+  }, []);
+
   const { viewWidth } = useAdaptivity();
 
+  const checkBoxClickHandle = (mailItemId) => {
+    if (toggledMailItemIds.includes(mailItemId)) {
+      setToggledMailItemIds(toggledMailItemIds.filter((id) => id !== mailItemId));
+    } else {
+      setToggledMailItemIds([...toggledMailItemIds, mailItemId]);
+    }
+  };
+
+  const sendToToggleMailItems = () => {
+    const body = { ids: toggledMailItemIds };
+
+    fetch('http://localhost:5000/mails/toggleread', {
+      method: 'post',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        setEmailItems(data);
+      });
+  };
+  const toggleAllHandle = () => {
+    setToggledMailItemIds(emailItems.map((_, index) => index));
+  };
   return (
     <AppRoot>
       <SplitLayout header={<PanelHeader separator={false} />}>
@@ -30,9 +66,20 @@ const Example = () => {
           <View activePanel="main">
             <Panel id="main">
               <PanelHeader>MAIL</PanelHeader>
+
+              <div>
+                <Button disabled={toggledMailItemIds.length === 0} onClick={sendToToggleMailItems}>
+                  Изменить прочитанность выделенных сообщений на противоположную
+                </Button>
+                <Button onClick={toggleAllHandle}>Выделить все сообщения</Button>
+              </div>
               <Group header={<Header mode="secondary">Сообщения</Header>}>
-                {smalData.map((data) => (
-                  <MailItem key={data.author + data.dateTime} data={data}>
+                {emailItems.map((data, id) => (
+                  <MailItem
+                    checkBoxValue={toggledMailItemIds.includes(id)}
+                    onCheckBoxClick={() => checkBoxClickHandle(id)}
+                    key={data.author + data.dateTime}
+                    data={data}>
                     {' '}
                   </MailItem>
                 ))}
