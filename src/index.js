@@ -17,6 +17,8 @@ import {
   Checkbox,
 } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
+import smalData from './data/small.json';
+import MailItem from './components/MailItem';
 
 const Example = () => {
   const { viewWidth } = useAdaptivity();
@@ -27,10 +29,13 @@ const Example = () => {
         <SplitCol spaced={viewWidth > ViewWidth.MOBILE}>
           <View activePanel="main">
             <Panel id="main">
-              <PanelHeader>VKUI</PanelHeader>
-              <Group header={<Header mode="secondary">Items</Header>}>
-                <Checkbox defaultChecked>Я участвую в сборе</Checkbox>
-                <SimpleCell>World</SimpleCell>
+              <PanelHeader>MAIL</PanelHeader>
+              <Group header={<Header mode="secondary">Сообщения</Header>}>
+                {smalData.map((data) => (
+                  <MailItem key={data.author + data.dateTime} data={data}>
+                    {' '}
+                  </MailItem>
+                ))}
               </Group>
             </Panel>
           </View>
