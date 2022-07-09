@@ -31,6 +31,7 @@ const VirtualizedList = ({
         key: i,
         checkBoxValue: renderItemProps.checkBoxValue(i),
         onCheckBoxClick: () => renderItemProps.onCheckBoxClick(i),
+        setMailToShow: renderItemProps.setMailToShow,
       }),
     );
   }

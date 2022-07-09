@@ -1,0 +1,63 @@
+.header__metadata-wrapper {
+  display: flex;
+}
+
+.header__metadata-avatar {
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+}
+
+.header__metadata {
+  display: flex;
+  align-items: center;
+}
+
+.header__metadata-date-time {
+  font-size: 13px;
+  color: rgb(147, 150, 155);
+}
+
+.header__metadata-name {
+  position: relative;
+}
+
+.header__metadata-name:hover .header__metadata-mail {
+  display: block;
+}
+
+.header__metadata-mail {
+  position: absolute;
+  display: none;
+  box-shadow: 0px 0px 5px black;
+  background-color: var(--secondary-color);
+  padding: 3px;
+  border-radius: 3px;
+}
+
+.main__files-wrapper {
+  display: flex;
+}
+
+.main__file {
+  position: relative;
+}
+
+.main__file:hover .main__file-filePath {
+  display: block;
+  top: 100%;
+  left: 50%;
+  box-shadow: 0px 0px 5px black;
+  background-color: var(--secondary-color);
+}
+.main__file-preview {
+  border-radius: 10px;
+}
+
+.main__file-filePath {
+  position: absolute;
+  display: none;
+  padding: 3px;
+  border-radius: 3px;
+}

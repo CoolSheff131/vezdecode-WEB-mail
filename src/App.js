@@ -7,11 +7,14 @@ import '@vkontakte/vkui/dist/vkui.css';
 
 import MailItem from './components/MailItem';
 import VirtualizedList from './components/VirtualizedList';
+import MailPage from './components/MailPage';
 
 function App() {
   const [emailItems, setEmailItems] = React.useState([]);
   const [toggledMailItemIds, setToggledMailItemIds] = React.useState([]);
   const [backgroundImage, setBackgroundImage] = React.useState(null);
+  const [mailToShow, setMailToShow] = React.useState(null);
+  const [theme, setTheme] = React.useState('black');
 
   React.useEffect(() => {
     fetch('http://localhost:5000/mails')
@@ -50,7 +53,7 @@ function App() {
 
   const themeChangeHandle = (theme) => {
     let themeValue = theme.target.value;
-
+    setTheme(themeValue);
     switch (themeValue) {
       case 'light':
         document.documentElement.style.setProperty('--main-color', '#fff');
@@ -73,52 +76,71 @@ function App() {
         document.documentElement.style.setProperty('--secondary-color', '#222');
     }
   };
+
   return (
     <AppRoot className="root">
-      <div
-        className={`container background ${
-          backgroundImage === 'cat'
-            ? 'background-cat'
-            : backgroundImage === 'dog'
-            ? 'background-dog'
-            : ''
-        }`}>
-        <div className="settings">
-          <Button disabled={toggledMailItemIds.length === 0} onClick={sendToToggleMailItems}>
-            Изменить прочитанность выделенных сообщений на противоположную
-          </Button>
-          <Button onClick={toggleAllHandle}>Выделить все сообщения</Button>
+      {!mailToShow && (
+        <div
+          className={`container background ${
+            backgroundImage === 'cat'
+              ? 'background-cat'
+              : backgroundImage === 'dog'
+              ? 'background-dog'
+              : ''
+          }`}>
+          <div className="settings">
+            <Button disabled={toggledMailItemIds.length === 0} onClick={sendToToggleMailItems}>
+              Изменить прочитанность выделенных сообщений на противоположную
+            </Button>
+            <Button onClick={toggleAllHandle}>Выделить все сообщения</Button>
 
-          <FormItem onChange={themeChangeHandle}>
-            <h1>Тема</h1>
-            <RadioGroup>
-              <Radio name="theme" className="radio" value="light">
-                Светлая
-              </Radio>
-              <Radio name="theme" className="radio" value="black" defaultChecked>
-                Темная
-              </Radio>
-              <Radio name="theme" className="radio" value="cat">
-                C котиками
-              </Radio>
-              <Radio name="theme" className="radio" value="dog">
-                С собачками
-              </Radio>
-            </RadioGroup>
-          </FormItem>
+            <FormItem onChange={themeChangeHandle}>
+              <h1>Тема</h1>
+              <RadioGroup>
+                <Radio
+                  name="theme"
+                  className="radio"
+                  value="light"
+                  defaultChecked={theme === 'light'}>
+                  Светлая
+                </Radio>
+                <Radio
+                  name="theme"
+                  className="radio"
+                  value="black"
+                  defaultChecked={theme === 'black'}>
+                  Темная
+                </Radio>
+                <Radio name="theme" className="radio" value="cat" defaultChecked={theme === 'cat'}>
+                  C котиками
+                </Radio>
+                <Radio name="theme" className="radio" value="dog" defaultChecked={theme === 'dog'}>
+                  С собачками
+                </Radio>
+              </RadioGroup>
+            </FormItem>
+          </div>
+          <div>
+            <VirtualizedList
+              data={emailItems}
+              renderItemProps={{
+                checkBoxValue: (id) => toggledMailItemIds.includes(id),
+                onCheckBoxClick: (id) => checkBoxClickHandle(id),
+                setMailToShow,
+              }}
+              itemHeight={40}
+              renderItem={MailItem}
+              windowHeight={800}></VirtualizedList>
+          </div>
         </div>
+      )}
+
+      {mailToShow && (
         <div>
-          <VirtualizedList
-            data={emailItems}
-            renderItemProps={{
-              checkBoxValue: (id) => toggledMailItemIds.includes(id),
-              onCheckBoxClick: (id) => checkBoxClickHandle(id),
-            }}
-            itemHeight={40}
-            renderItem={MailItem}
-            windowHeight={800}></VirtualizedList>
+          <Button onClick={() => setMailToShow(null)}>Показать список</Button>
+          <MailPage data={mailToShow}></MailPage>
         </div>
-      </div>
+      )}
     </AppRoot>
   );
 }

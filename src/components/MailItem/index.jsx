@@ -1,10 +1,19 @@
 import { Checkbox, Text } from '@vkontakte/vkui';
 import './styles/MailItem.css';
 
-const MailItem = ({ style, data, onCheckBoxClick, checkBoxValue }) => {
+const MailItem = ({ style, data, onCheckBoxClick, checkBoxValue, setMailToShow }) => {
+  const checkBoxClickHandle = (event) => {
+    event.stopPropagation();
+    onCheckBoxClick();
+  };
   return (
-    <div style={style} className="mail-item">
-      <Checkbox checked={checkBoxValue} onClick={onCheckBoxClick}></Checkbox>
+    <div
+      style={style}
+      className="mail-item"
+      onClick={() => {
+        setMailToShow(data);
+      }}>
+      <Checkbox checked={checkBoxValue} onClick={checkBoxClickHandle}></Checkbox>
 
       <div className="mail-item__author">{data.author.name}</div>
       <div className="mail-item__title">{data.title}</div>
