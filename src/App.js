@@ -6,6 +6,7 @@ import { AppRoot, Header, Group, Button, FormItem, RadioGroup, Radio } from '@vk
 import '@vkontakte/vkui/dist/vkui.css';
 
 import MailItem from './components/MailItem';
+import VirtualizedList from './components/VirtualizedList';
 
 function App() {
   const [emailItems, setEmailItems] = React.useState([]);
@@ -49,7 +50,7 @@ function App() {
 
   const themeChangeHandle = (theme) => {
     let themeValue = theme.target.value;
-    console.log(themeValue);
+
     switch (themeValue) {
       case 'light':
         document.documentElement.style.setProperty('--main-color', '#fff');
@@ -71,8 +72,6 @@ function App() {
         document.documentElement.style.setProperty('--main-color', '#000');
         document.documentElement.style.setProperty('--secondary-color', '#222');
     }
-    // if (color === 'black') color = '#000';
-    // document.documentElement.style.setProperty('--main-color', color);
   };
   return (
     <AppRoot className="root">
@@ -93,10 +92,10 @@ function App() {
           <FormItem onChange={themeChangeHandle}>
             <h1>Тема</h1>
             <RadioGroup>
-              <Radio name="theme" className="radio" value="light" defaultChecked>
+              <Radio name="theme" className="radio" value="light">
                 Светлая
               </Radio>
-              <Radio name="theme" className="radio" value="black">
+              <Radio name="theme" className="radio" value="black" defaultChecked>
                 Темная
               </Radio>
               <Radio name="theme" className="radio" value="cat">
@@ -109,15 +108,15 @@ function App() {
           </FormItem>
         </div>
         <div>
-          {emailItems.map((data, id) => (
-            <MailItem
-              checkBoxValue={toggledMailItemIds.includes(id)}
-              onCheckBoxClick={() => checkBoxClickHandle(id)}
-              key={data.author + data.dateTime}
-              data={data}>
-              {' '}
-            </MailItem>
-          ))}
+          <VirtualizedList
+            data={emailItems}
+            renderItemProps={{
+              checkBoxValue: (id) => toggledMailItemIds.includes(id),
+              onCheckBoxClick: (id) => checkBoxClickHandle(id),
+            }}
+            itemHeight={40}
+            renderItem={MailItem}
+            windowHeight={800}></VirtualizedList>
         </div>
       </div>
     </AppRoot>

@@ -1,9 +1,9 @@
 import { Checkbox, Text } from '@vkontakte/vkui';
 import './styles/MailItem.css';
 
-const MailItem = ({ data, onCheckBoxClick, checkBoxValue }) => {
+const MailItem = ({ style, data, onCheckBoxClick, checkBoxValue }) => {
   return (
-    <div className="mail-item">
+    <div style={style} className="mail-item">
       <Checkbox checked={checkBoxValue} onClick={onCheckBoxClick}></Checkbox>
 
       <div className="mail-item__author">{data.author.name}</div>
